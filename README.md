@@ -18,7 +18,7 @@
 - [ ] 深入学习diff算法思想
 - [ ] Shadow DOM 和 Virtual DOM 之间有什么区别
 - [ ] 什么是受控组件和非受控组件
-- [ ] React 生命周期方法有哪些
+- [ ] [React 生命周期方法有哪些](./article/NO00001.md)
 - [ ] Flux 和 Redux 之间有什么区别
 
 ### Webpack
