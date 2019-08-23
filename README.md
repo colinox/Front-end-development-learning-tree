@@ -34,3 +34,7 @@
 ### Algorithm
 
 - [ ] 学习常用的前端排序算法
+
+### other
+
+- [x] [学习Vim常用快捷键操作](./article/NO00001.md)
