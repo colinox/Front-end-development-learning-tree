@@ -1,3 +1,9 @@
+<!-- TOC -->
+
+- [表单中Readonly和Disabled的区别](#%e8%a1%a8%e5%8d%95%e4%b8%adreadonly%e5%92%8cdisabled%e7%9a%84%e5%8c%ba%e5%88%ab)
+
+<!-- /TOC -->
+
 ## 表单中Readonly和Disabled的区别
 
 `readonly`和`disabled`是用在表单中的两个属性，它们都能够做到使用户不能够更改表单域中的内容。但是它们之间有着微小的差别，总结如下：
