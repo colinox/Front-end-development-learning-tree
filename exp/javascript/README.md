@@ -1,5 +1,6 @@
 <!-- TOC -->
 
+- [简单实现MVVM双向数据绑定](#简单实现mvvm双向数据绑定)
 - [判断是否空对象](#判断是否空对象)
 - [JavaScript获取屏幕分辨率（包含显示设置文本缩放）](#javascript获取屏幕分辨率包含显示设置文本缩放)
 - [订阅者模式](#订阅者模式)
@@ -118,6 +119,76 @@
 - [Js/Jquery获取iframe中的元素](#jsjquery获取iframe中的元素)
 
 <!-- /TOC -->
+
+## 简单实现MVVM双向数据绑定
+
+```js
+class Vue {
+    constructor(opt) {
+        this.opt = opt
+        this.observe(opt.data)
+        console.log(opt.data);
+        let root = document.querySelector(opt.el)
+        this.compile(root)
+    }
+    // 为响应式对象 data 里的每一个 key 绑定一个观察者对象
+    observe(data) {
+        Object.keys(data).forEach(key => {
+            let obv = new Observer()
+            data["_" + key] = data[key]
+            // 通过 getter setter 暴露 for 循环中作用域下的 obv，闭包产生
+            Object.defineProperty(data, key, {
+                get() {
+                    Observer.target && obv.addSubNode(Observer.target);
+                    return data['_' + key]
+                },
+                set(newVal) {
+                    obv.update(newVal)
+                    data['_' + key] = newVal
+                }
+            })
+        })
+    }
+    // 初始化页面，遍历 DOM，收集每一个key变化时，随之调整的位置，以观察者方法存放起来
+    compile(node) {
+        [].forEach.call(node.childNodes, child => {
+            if (!child.firstElementChild && /\{\{(.*)\}\}/.test(child.innerHTML)) {
+                let key = RegExp.$1.trim()
+                child.innerHTML = child.innerHTML.replace(new RegExp('\\{\\{\\s*' + key + '\\s*\\}\\}', 'gm'), this.opt.data[key])
+                Observer.target = child
+                this.opt.data[key]
+                Observer.target = null
+            } else if (child.firstElementChild) {
+                this.compile(child)
+            }
+        })
+    }
+}
+// 常规观察者类
+class Observer {
+    constructor() {
+        this.subNode = []
+    }
+    addSubNode(node) {
+        this.subNode.push(node)
+    }
+    update(newVal) {
+        this.subNode.forEach(node => {
+            node.innerHTML = newVal
+        })
+    }
+}
+
+let opt = {
+    el: '#app',
+    data: {
+        name: 'zhangyue',
+        age: 30
+    }
+}
+
+let vm = new Vue(opt);
+```
 
 ## 判断是否空对象
 
